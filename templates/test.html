@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block profile_active %}active{% endblock %}
+{% block content %}
+<head>
+    <title>Comprehension and Questions</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            height: 100%;
+        }
+        .comprehension {
+            background-color: #f1f1f1;
+            flex: 1;
+            overflow-y: scroll;
+            height: 100vh;
+            position: relative;
+        }
+        .comprehension img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
+        }
+        .zoom-icons {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .zoom-icons button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            margin: 0 5px;
+            font-size: 24px;
+        }
+        .questions {
+            width: 40%;
+        }
+        .timer {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question p {
+            font-weight: bold;
+        }
+        .question ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .question li {
+            margin-bottom: 10px;
+        }
+
+        @media only screen and (max-width: 767px) {
+            .container {
+                flex-direction: column;
+            }
+            .comprehension {
+                height: auto;
+            }
+            .comprehension img {
+                width: auto;
+                height: 700px;
+                max-width: 100%;
+                object-fit: contain;
+            }
+        }
+        .next-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    height:50px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.next-button:hover {
+    background-color: #45a049;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="comprehension">
+            <img src="../static/Mock Test 10.jpg" alt="Comprehension Photo">
+            <div class="zoom-icons">
+                <button onclick="zoomIn()">+</button>
+                <button onclick="zoomOut()">-</button>
+            </div>
+        </div>
+        <div class="questions">
+            <div class="timer" id="timer">1:00</div>
+            <div class="question">
+                <p>What is the capital city of France?</p>
+                <ul>
+                    <li>A) Paris</li>
+                    <li>B) London</li>
+                    <li>C) Rome</li>
+                </ul>
+            </div>
+            <div class="question">
+                <hr>
+                <p>Who painted the Mona Lisa?</p>
+                <ul>
+                    <li>A) Leonardo da Vinci</li>
+                    <li>B) Vincent van Gogh</li>
+                    <li>C) Pablo Picasso</li>
+                </ul>
+            </div>
+        </div>
+          <button class="next-button">Next</button>
+    </div>
+
+   <script>
+    var timeLimit = 60; // in seconds
+    var timerDisplay = document.getElementById('timer');
+    var timer = setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+        var minutes = Math.floor(timeLimit / 60);
+        var seconds = timeLimit % 60;
+
+        if (seconds < 10) {
+            seconds = '0' + seconds;
+        }
+
+        timerDisplay.textContent = minutes + ':' + seconds;
+
+        if (timeLimit <= 0) {
+            clearInterval(timer);
+            timerDisplay.textContent = 'Time up!';
+        }
+
+        timeLimit--;
+    }
+
+    function zoomIn() {
+        var imgElement = document.querySelector('.comprehension img');
+        var currentScale = parseFloat(imgElement.style.transform.replace('scale(', '').replace(')', ''));
+        var newScale = currentScale + 0.2; // Change the value (0.2) to adjust the zoom level
+
+        imgElement.style.transform = 'scale(' + newScale + ')';
+    }
+
+    function zoomOut() {
+        document.querySelector('.comprehension img').style.transform = 'scale(1)';
+    }
+
+    function changeQuestions() {
+        // Hide current question
+        document.getElementById("question1").style.display = "none";
+
+        // Show next question
+        document.getElementById("question2").style.display = "block";
+    }
+</script>
+</body>
+{% endblock %}
